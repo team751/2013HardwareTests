@@ -5,6 +5,8 @@ package org.team751;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,11 +27,12 @@ public class AccelerometerGyroTest extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-
+		LiveWindow.addSensor("Navigator",
+							 "Gyroscope sensor", gyro);
     }
 	
 	public void disabledPeriodic() {
-		
+		doDebug();
 	}
 
     /**
@@ -43,14 +46,14 @@ public class AccelerometerGyroTest extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
+        doDebug();
     }
     
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-    
+		LiveWindow.run();
     }
     
 	
@@ -60,5 +63,10 @@ public class AccelerometerGyroTest extends IterativeRobot {
 		double heading = gyro.getAngle();
 		
 		System.out.println("Heading "+heading+" X "+axes.XAxis+" Y "+axes.YAxis+" Z "+axes.ZAxis);
+		
+		SmartDashboard.putNumber("Heading", heading);
+		SmartDashboard.putNumber("X", axes.XAxis);
+		SmartDashboard.putNumber("Y", axes.YAxis);
+		SmartDashboard.putNumber("Z", axes.ZAxis);
 	}
 }
