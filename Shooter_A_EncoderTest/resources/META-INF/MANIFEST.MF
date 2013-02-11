@@ -1,0 +1,6 @@
+MIDlet-Name: Shooter_A_EncoderTest
+MIDlet-Version: 1.0.0
+MIDlet-Vendor: FIRST
+MIDlet-1: Shooter_A_EncoderTest, , org.team751.Shooter_A_EncoderTest
+MicroEdition-Profile: IMP-1.0
+MicroEdition-Configuration: CLDC-1.1
