@@ -82,6 +82,8 @@ public class Shooter_A_EncoderTest extends IterativeRobot {
 		} catch (CANTimeoutException ex) {
 			ex.printStackTrace();
 		}
+		
+		doDebug();
 	}
 
 	/**
