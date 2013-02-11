@@ -17,6 +17,8 @@ readings that are increasing.
 
 ### 2: Powered shooter testing ###
 
+Ensure that the robot has a fully charged battery installed.
+
 Enable the robot. Gradually push joystick 1 forward (or maybe pull it backwards)
 to run the motor for shooter wheel 1. Verify that this motion makes the wheel
 turn in the right direction to shoot a disk. Look at the encoder rate measurements
@@ -30,3 +32,7 @@ Verify that joystick 1 controls the first wheel, that the disk will contact
 first when it enters the shooter, and that joystick 2 controls the second wheel,
 that the disk will contact second, just before it leaves the shooter.
 
+Write down the maximum speed for each wheel. This will be a value in counts
+per second. Divide this by 360 to get the speed in revolutions per second.
+Multiply this by 60 to get the speed in revolutions per minute.
+Write down these values.
