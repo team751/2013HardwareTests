@@ -1,12 +1,8 @@
-
 package org.team751;
 
 
-import edu.wpi.first.wpilibj.ADXL345_I2C;
-import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -15,21 +11,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class AccelerometerGyroTest extends IterativeRobot {
+public class DrivetrainEncoderTest extends IterativeRobot {
 	
-	private ADXL345_I2C accel = new ADXL345_I2C(1,
-												ADXL345_I2C.DataFormat_Range.k4G);
-	
-	private Gyro gyro = new Gyro(1);
+	private Encoder rightEncoder = new Encoder(1, 2);
 	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-		LiveWindow.addSensor("Navigator",
-							 "Gyroscope sensor", gyro);
-		doDebug();
+		
+		/*
+		 * 1 pulse = 1/250 rotation
+		 * 1 rotation = 6¹ inches = 0.4788 meters
+		 * 
+		 * so 1 pulse = 0.0019152 meters
+		 */
+		rightEncoder.setDistancePerPulse(0.001952);
+		rightEncoder.setReverseDirection(true);
+		rightEncoder.start();
     }
 	
 	public void disabledPeriodic() {
@@ -47,27 +47,17 @@ public class AccelerometerGyroTest extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        doDebug();
+        
     }
     
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-		LiveWindow.run();
+    
     }
     
-	
 	private void doDebug() {
-		ADXL345_I2C.AllAxes axes = accel.getAccelerations();
-		
-		double heading = gyro.getAngle();
-		
-		System.out.println("Heading "+heading+" X "+axes.XAxis+" Y "+axes.YAxis+" Z "+axes.ZAxis);
-		
-		SmartDashboard.putNumber("Heading", heading);
-		SmartDashboard.putNumber("X", axes.XAxis);
-		SmartDashboard.putNumber("Y", axes.YAxis);
-		SmartDashboard.putNumber("Z", axes.ZAxis);
+		System.out.println("Encoder: "+rightEncoder.get()+" counts");
 	}
 }
