@@ -1,6 +1,7 @@
 package org.team751;
 
 import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -20,13 +21,12 @@ public class Shooter_A_EncoderTest extends IterativeRobot {
 
 	private CANJaguar secondJaguar;
 
-	private Encoder firstEncoder = new Encoder(
-			DigitalChannels.SHOOTER_FIRST_ENCODER_A,
-											   DigitalChannels.SHOOTER_FIRST_ENCODER_B);
+        //Counters: 360 counts/revolution
+	private Counter firstEncoder = new Counter(
+			DigitalChannels.SHOOTER_FIRST_ENCODER_A);
 
-	private Encoder secondEncoder = new Encoder(
-			DigitalChannels.SHOOTER_SECOND_ENCODER_A,
-												DigitalChannels.SHOOTER_SECOND_ENCODER_B);
+	private Counter secondEncoder = new Counter(
+			DigitalChannels.SHOOTER_SECOND_ENCODER_A);
 
 	private Joystick stick1 = new Joystick(1);
 
@@ -43,6 +43,9 @@ public class Shooter_A_EncoderTest extends IterativeRobot {
 		} catch (CANTimeoutException ex) {
 			ex.printStackTrace();
 		}
+                
+                firstEncoder.setUpSourceEdge(true, false);
+                secondEncoder.setUpSourceEdge(true, false);
 
 		firstEncoder.start();
 		secondEncoder.start();
@@ -97,8 +100,8 @@ public class Shooter_A_EncoderTest extends IterativeRobot {
 		int firstCount = firstEncoder.get();
 		int secondCount = secondEncoder.get();
 
-		double firstRate = firstEncoder.getRate();
-		double secondRate = secondEncoder.getRate();
+		double firstRate = 1 / firstEncoder.getPeriod();
+		double secondRate = 1 / secondEncoder.getPeriod();
 
 		SmartDashboard.putNumber("First count", firstCount);
 		SmartDashboard.putNumber("Second count", secondCount);
