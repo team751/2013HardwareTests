@@ -21,6 +21,12 @@ public class CowTest extends IterativeRobot {
     private CANJaguar jaguar;
     
     private DigitalInput zeroSwitch = new DigitalInput(13);
+    
+    private DigitalInput stomach0 = new DigitalInput(9);
+    private DigitalInput stomach1 = new DigitalInput(10);
+    private DigitalInput stomach2 = new DigitalInput(11);
+    private DigitalInput stomach3 = new DigitalInput(12);
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -80,12 +86,14 @@ public class CowTest extends IterativeRobot {
     }
     
     private void doDebug() {
-        try {
-            System.out.println("Position "+jaguar.getPosition());
-            System.out.println("Limit switches forward "+jaguar.getForwardLimitOK()+" reverse "+jaguar.getReverseLimitOK());
-            System.out.println("Zeroed: "+zeroSwitch.get());
-        } catch (CANTimeoutException ex) {
-            ex.printStackTrace();
-        }
+//        try {
+////            System.out.println("Position "+jaguar.getPosition());
+////            System.out.println("Limit switches forward "+jaguar.getForwardLimitOK()+" reverse "+jaguar.getReverseLimitOK());
+////            System.out.println("Zeroed: "+zeroSwitch.get());
+//        } catch (CANTimeoutException ex) {
+//            ex.printStackTrace();
+//        }
+        
+        System.out.println("Stomachs: 0 "+stomach0.get()+" 1 "+stomach1.get()+" 2 "+stomach2.get()+" 3 "+stomach3.get());
     }
 }
