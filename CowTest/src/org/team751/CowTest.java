@@ -1,14 +1,11 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) FIRST 2008. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package org.team751;
 
 
+import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.can.CANTimeoutException;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,12 +15,32 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  * directory.
  */
 public class CowTest extends IterativeRobot {
+    
+    private Joystick joystick = new Joystick(1);
+    
+    private CANJaguar jaguar;
+    
+    private DigitalInput zeroSwitch = new DigitalInput(13);
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-
+        try {
+            jaguar = new CANJaguar(8);
+            jaguar.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+            jaguar.changeControlMode(CANJaguar.ControlMode.kPosition);
+            jaguar.configEncoderCodesPerRev(1);
+            jaguar.setPID(1, 0, 0);
+            jaguar.enableControl();
+        } catch (CANTimeoutException ex) {
+            ex.printStackTrace();
+        }
+        
+    }
+    
+    public void disabledPeriodic() {
+        doDebug();
     }
 
     /**
@@ -37,14 +54,38 @@ public class CowTest extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+        doDebug();
         
+        if(joystick.getRawButton(5)) {
+            try {
+                jaguar.setX(jaguar.getX() + 1);
+            } catch (CANTimeoutException ex) {
+                ex.printStackTrace();
+            }
+        }
+        else if(joystick.getRawButton(4)) {
+            try {
+                jaguar.setX(jaguar.getX() - 1);
+            } catch (CANTimeoutException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
     
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-    
+        doDebug();
     }
     
+    private void doDebug() {
+        try {
+            System.out.println("Position "+jaguar.getPosition());
+            System.out.println("Limit switches forward "+jaguar.getForwardLimitOK()+" reverse "+jaguar.getReverseLimitOK());
+            System.out.println("Zeroed: "+zeroSwitch.get());
+        } catch (CANTimeoutException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
